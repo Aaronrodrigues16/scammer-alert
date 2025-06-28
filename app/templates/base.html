@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Scammer Alert{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/input.css') }}">
+    <style>
+        body { font-family: 'Lato', sans-serif; }
+        /* Add any custom styles here if needed that Tailwind doesn't cover */
+        .alert-close-btn {
+            margin-left: auto;
+            cursor: pointer;
+            font-weight: bold;
+            color: inherit;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+        .alert-close-btn:hover {
+            opacity: 1;
+        }
+    </style>
+    {% block head_extra %}{% endblock %}
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <a href="{{ url_for('main.index') }}" class="flex items-center text-2xl font-bold text-slate-900">
+                    {# Removed the <img> tag since you don't have an image #}
+                    🛡️ Scammer Alert {# Replaced with a shield emoji for branding #}
+                </a>
+                <div class="hidden md:flex items-center space-x-8 text-lg">
+                    <a href="{{ url_for('main.report_form') }}" class="text-slate-600 hover:text-indigo-600">Report a Scam</a>
+                    <a href="{{ url_for('main.info') }}" class="text-slate-600 hover:text-indigo-600">Learn & Protect</a>
+                    {% if session.get('user_id') %}
+                        <a href="{{ url_for('auth.logout') }}" class="bg-indigo-500 text-white px-5 py-2 rounded-full hover:bg-indigo-600 transition duration-200">Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="text-slate-600 hover:text-indigo-600">Login</a>
+                        <a href="{{ url_for('auth.signup') }}" class="bg-indigo-500 text-white px-5 py-2 rounded-full hover:bg-indigo-600 transition duration-200">Sign Up</a>
+                    {% endif %}
+                </div>
+                <div class="md:hidden">
+                    <button class="text-slate-600 hover:text-indigo-600 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-5xl mx-auto px-4 py-8 md:py-16">
+        {# Flashed messages display #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-8"> {# Margin below messages block #}
+                {% for category, message in messages %}
+                    <div class="flex items-center p-4 mb-4 text-sm rounded-lg relative
+                        {% if category == 'danger' or category == 'error' %} bg-red-100 text-red-700 {% elif category == 'success' %} bg-green-100 text-green-700 {% elif category == 'warning' %} bg-yellow-100 text-yellow-700 {% else %} bg-blue-100 text-blue-700 {% endif %}"
+                        role="alert">
+                        <span class="font-medium flex-grow">{{ message }}</span>
+                        {# Simple inline JS for dismiss - you might want more robust solution with Alpine.js or React/Vue #}
+                        <button type="button" class="alert-close-btn ms-4" onclick="this.parentElement.style.display='none';" aria-label="Close">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </button>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-slate-100 border-t border-slate-200 mt-auto py-8">
+        <div class="max-w-5xl mx-auto px-4 text-center text-slate-500">
+            <p>&copy; 2025 Scammer Alert. For Educational Use Only.</p>
+        </div>
+    </footer>
+
+    {% block scripts_extra %}{% endblock %}
+</body>
+</html>

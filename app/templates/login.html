@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Scammer Alert{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto">
+    <div class="bg-white shadow-lg rounded-xl p-8 mt-6">
+        <h2 class="text-3xl font-bold text-center text-slate-900 mb-6">Login to Your Account</h2>
+        <p class="text-slate-600 text-center mb-6">Access your saved reports and send alerts.</p>
+
+        <form action="{{ url_for('auth.login') }}" method="POST">
+            <div class="mb-5">
+                <label for="email" class="block text-slate-700 text-lg font-semibold mb-2">Email Address:</label>
+                <input type="email" class="block w-full px-4 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-lg" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="mb-6">
+                <label for="password" class="block text-slate-700 text-lg font-semibold mb-2">Password:</label>
+                <input type="password" class="block w-full px-4 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-lg" id="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg text-xl font-bold hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300">
+                Login
+            </button>
+        </form>
+
+        <p class="text-center text-slate-600 mt-6">
+            Don't have an account? <a href="{{ url_for('auth.signup') }}" class="text-indigo-600 hover:underline">Sign Up</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

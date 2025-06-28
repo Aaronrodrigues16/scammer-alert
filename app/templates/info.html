@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Learn & Protect - Scammer Alert{% endblock %}
+
+{% block content %}
+<div class="bg-white shadow-lg rounded-xl p-8 mt-6 prose max-w-none">
+    <h1 class="text-4xl font-bold text-center text-slate-900 mb-8">Learn & Protect Yourself</h1>
+    <p class="text-lg text-slate-700 mb-6">
+        Staying informed is your best defense against scams. Here's what you need to know about common scam tactics and how to protect yourself and your loved ones.
+    </p>
+
+    <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Common Scam Types</h2>
+    <ul class="list-disc list-inside space-y-3 text-lg text-slate-700">
+        <li>
+            <strong>Phishing Scams:</strong> Fraudsters sending fake emails or texts impersonating legitimate organizations (banks, government agencies) to steal personal information.
+            <ul class="list-disc list-inside ml-6 text-base text-slate-600">
+                <li>Look for suspicious sender addresses, generic greetings, and urgent calls to action.</li>
+                <li>Never click on suspicious links or download attachments from unknown sources.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Tech Support Scams:</strong> Pop-up warnings or calls claiming your computer has a virus, prompting you to call a fake "tech support" number. They'll try to gain remote access or demand payment.
+            <ul class="list-disc list-inside ml-6 text-base text-slate-600">
+                <li>Legitimate companies will not spontaneously call you about computer issues.</li>
+                <li>Never give remote access to unsolicited callers.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Romance Scams:</strong> Scammers create fake online profiles to build emotional relationships, then ask for money for emergencies, travel, or other fabricated needs.
+            <ul class="list-disc list-inside ml-6 text-base text-slate-600">
+                <li>Be wary of requests for money, especially if you've never met in person.</li>
+                <li>Scammers often avoid video calls or meeting up.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Grandparent Scams:</strong> A scammer pretends to be a grandchild in distress, needing money immediately for an emergency (bail, hospital bills, travel).
+            <ul class="list-disc list-inside ml-6 text-base text-slate-600">
+                <li>Always verify the story by calling the grandchild directly on a known number.</li>
+                <li>Ask personal questions only the real grandchild would know.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Investment Scams:</strong> Promises of high returns with little to no risk. Often involves cryptocurrency or fake investment platforms.
+            <ul class="list-disc list-inside ml-6 text-base text-slate-600">
+                <li>If it sounds too good to be true, it probably is.</li>
+                <li>Research any investment opportunity thoroughly before committing funds.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2 class="text-2xl font-bold text-slate-900 mt-10 mb-4">General Protection Tips</h2>
+    <ul class="list-disc list-inside space-y-3 text-lg text-slate-700">
+        <li><strong>Be Skeptical:</strong> Always question unsolicited calls, emails, or messages.</li>
+        <li><strong>Verify Information:</strong> If contacted by someone claiming to be from an organization, find their official contact details independently and call them back.</li>
+        <li><strong>Protect Personal Information:</strong> Never share sensitive details (passwords, bank details, Aadhaar/SSN) unless you initiated the contact and trust the recipient.</li>
+        <li><strong>Strong Passwords & MFA:</strong> Use strong, unique passwords for all accounts and enable Multi-Factor Authentication (MFA) wherever possible.</li>
+        <li><strong>Regularly Update Software:</strong> Keep your operating system, web browser, and antivirus software up to date.</li>
+        <li><strong>Talk to Loved Ones:</strong> Educate family and friends, especially seniors, about common scams.</li>
+        <li><strong>Report Scams:</strong> If you suspect a scam, report it to the authorities. Our tool is here to help you analyze and report!</li>
+    </ul>
+
+    <div class="text-center mt-12">
+        <a href="{{ url_for('main.report_form') }}" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-full text-xl font-bold hover:bg-indigo-700 transition duration-300">
+            Report a Scam Now
+        </a>
+    </div>
+</div>
+{% endblock %}

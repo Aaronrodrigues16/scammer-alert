@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Scammer Alert{% endblock %}
+
+{% block content %}
+<div class="text-center py-20 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg shadow-xl">
+    <h1 class="text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
+        Your Personal Shield <br class="hidden sm:inline"> Against Digital Fraud
+    </h1>
+    <p class="text-xl text-slate-700 max-w-2xl mx-auto mb-10">
+        Easily report suspicious communications and protect your loved ones from scams with our advanced analysis.
+    </p>
+    <a href="{{ url_for('main.report_form') }}" class="inline-block bg-indigo-600 text-white px-10 py-4 rounded-full text-xl font-bold hover:bg-indigo-700 transition duration-300 transform hover:scale-105">
+        Report a Scam Now
+    </a>
+    <p class="mt-8 text-slate-600 text-lg">
+        <a href="{{ url_for('main.info') }}" class="text-indigo-600 hover:underline">Learn more about common scams</a> and how to stay safe.
+    </p>
+</div>
+{% endblock %}

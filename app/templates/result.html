@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Scam Analysis Result - Scammer Alert{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto"> {# Using max-w-xl for consistency with report.html #}
+    <div class="bg-white shadow-lg rounded-xl p-8 mt-6 text-center">
+        <h2 class="text-3xl font-bold mb-4
+            {% if is_scam_detected %}text-red-600{% else %}text-green-600{% endif %}">
+            {# The '🚨' check might be redundant if result_title already indicates severity #}
+            {{ result_title }}
+        </h2>
+        <p class="text-lg text-slate-700 mb-6">{{ result_message }}</p>
+
+        <div class="border-t border-slate-200 pt-6 mt-6">
+            <h5 class="text-2xl font-bold text-slate-800 mb-4">Details of Analysis:</h5>
+            <ul class="text-left space-y-3 text-slate-700 mb-8">
+
+                {% if original_text_input %}
+                    <li class="p-3 bg-slate-50 rounded-lg">
+                        <strong class="block text-lg text-slate-800">Original Text Input:</strong>
+                        <small class="text-slate-600 break-words">{{ original_text_input }}</small>
+                    </li>
+                {% endif %}
+
+                {% if transcript %}
+                    <li class="p-3 bg-slate-50 rounded-lg">
+                        <strong class="block text-lg text-slate-800">Transcribed Audio:</strong>
+                        <small class="text-slate-600 break-words">{{ transcript }}</small>
+                    </li>
+                {% endif %}
+
+                {% if file_url %}
+                    <li class="p-3 bg-slate-50 rounded-lg">
+                        <strong class="block text-lg text-slate-800">Associated File/URL:</strong>
+                        {% if 'http' in file_url %} {# Simple check for a URL #}
+                            <a href="{{ file_url }}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline break-all">{{ file_url }}</a>
+                        {% else %}
+                            <small class="text-slate-600 break-words">{{ file_url }}</small>
+                        {% endif %}
+                    </li>
+                {% endif %}
+
+                <li class="p-3 bg-slate-50 rounded-lg flex items-center">
+                    <strong class="text-lg text-slate-800 mr-2">Scam Detection:</strong>
+                    <span class="px-4 py-1 rounded-full text-base font-semibold
+                        {% if is_scam_detected %}bg-red-100 text-red-800{% else %}bg-green-100 text-green-800{% endif %}">
+                        {% if is_scam_detected %}Potential Scam{% else %}Looks Safe{% endif %}
+                    </span>
+                </li>
+
+                {% if found_keywords %}
+                    <li class="p-3 bg-slate-50 rounded-lg">
+                        <strong class="block text-lg text-slate-800 mb-2">Found Keywords:</strong>
+                        <div class="flex flex-wrap gap-2">
+                            {% for keyword in found_keywords %}
+                                <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 text-sm font-medium">{{ keyword }}</span>
+                            {% endfor %}
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="p-3 bg-slate-50 rounded-lg">
+                        <strong class="block text-lg text-slate-800">Found Keywords:</strong>
+                        <small class="text-slate-600">None</small>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <a href="{{ url_for('main.report_form') }}" class="w-full inline-block bg-indigo-600 text-white py-3 rounded-lg text-xl font-bold hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 mt-4">
+                Check Another Message
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

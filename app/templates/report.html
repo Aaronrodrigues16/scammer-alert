@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Report a Scam - Scammer Alert{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto">
+    <div class="bg-white shadow-lg rounded-xl p-8 mt-6">
+        <h2 class="text-3xl font-bold text-center text-slate-900 mb-6">Report a Potential Scam</h2>
+        <p class="text-slate-600 text-center mb-6">
+            Please provide the details of the suspicious communication below. You can enter text, upload a screenshot, or provide a suspicious URL.
+        </p>
+
+        <form action="{{ url_for('main.analyze') }}" method="POST" enctype="multipart/form-data" id="scamReportForm">
+            <div class="mb-5">
+                <label for="content_type" class="block text-slate-700 text-lg font-semibold mb-2">Select Content Type:</label>
+                <select class="block w-full px-4 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-lg" id="content_type" name="content_type" required onchange="toggleInputs()">
+                    <option value="">-- Please Select --</option>
+                    <option value="text">Suspicious Text Message / Email</option>
+                    <option value="image">Suspicious Screenshot / Image</option>
+                    <option value="url">Suspicious URL / Link</option>
+                </select>
+            </div>
+
+            <div id="text_input_group" class="mb-5" style="display: none;">
+                <label for="text_content" class="block text-slate-700 text-lg font-semibold mb-2">Enter Suspicious Text:</label>
+                <textarea class="block w-full px-4 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-lg" id="text_content" name="text_content" rows="6" placeholder="Paste the suspicious text content here..."></textarea>
+                <p class="text-sm text-slate-500 mt-2">We will analyze this text for known scam keywords.</p>
+            </div>
+
+            <div id="image_input_group" class="mb-5" style="display: none;">
+                <label for="image_file" class="block text-slate-700 text-lg font-semibold mb-2">Upload Suspicious Image / Screenshot:</label>
+                <input class="block w-full text-lg text-slate-900 border border-slate-300 rounded-lg cursor-pointer bg-slate-50 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" type="file" id="image_file" name="image_file" accept="image/*">
+                <p class="text-sm text-slate-500 mt-2">We will use OCR to extract text from the image and scan for known threats. (.png, .jpg, .jpeg)</p>
+            </div>
+
+            <div id="url_input_group" class="mb-5" style="display: none;">
+                <label for="suspicious_url" class="block text-slate-700 text-lg font-semibold mb-2">Enter Suspicious URL:</label>
+                <input type="url" class="block w-full px-4 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-lg" id="suspicious_url" name="suspicious_url" placeholder="e.g., https://malicious-site.com">
+                <p class="text-sm text-slate-500 mt-2">We will scan this URL for known threats.</p>
+            </div>
+
+            <div class="border-t border-slate-200 pt-5 mt-5">
+                <h5 class="text-xl font-bold text-slate-800 mb-4">Optional Information for Alerts (if scam detected)</h5>
+
+                <div class="mb-5">
+                    <label for="loved_one_name" class="block text-slate-700 text-lg font-semibold mb-2">Loved One's Name (Optional, for personalized alerts):</label>
+                    <input type="text" class="block w-full px-4 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-lg" id="loved_one_name" name="loved_one_name" placeholder="e.g., Grandma Mary">
+                </div>
+
+                <div class="mb-6">
+                    <label for="loved_one_phone" class="block text-slate-700 text-lg font-semibold mb-2">Loved One's Phone Number (Optional, for SMS/WhatsApp alerts, include country code):</label>
+                    <input type="tel" class="block w-full px-4 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-lg" id="loved_one_phone" name="loved_one_phone" placeholder="e.g., +919876543210">
+                    <p class="text-sm text-slate-500 mt-2">Example: +12345678900 (for US), +919876543210 (for India).</p>
+                </div>
+
+                <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg text-xl font-bold hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300">
+                    Analyze and Report Scam
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+    function toggleInputs() {
+        const contentType = document.getElementById('content_type').value;
+        const textInputGroup = document.getElementById('text_input_group');
+        const imageInputGroup = document.getElementById('image_input_group');
+        const urlInputGroup = document.getElementById('url_input_group');
+
+        // Hide all input groups and remove 'required'
+        textInputGroup.style.display = 'none';
+        document.getElementById('text_content').removeAttribute('required');
+
+        imageInputGroup.style.display = 'none';
+        document.getElementById('image_file').removeAttribute('required');
+
+        urlInputGroup.style.display = 'none';
+        document.getElementById('suspicious_url').removeAttribute('required');
+
+        // Reset values
+        document.getElementById('text_content').value = '';
+        if (document.getElementById('image_file')) document.getElementById('image_file').value = '';
+        document.getElementById('suspicious_url').value = '';
+
+        // Show relevant input group and add 'required'
+        if (contentType === 'text') {
+            textInputGroup.style.display = 'block';
+            document.getElementById('text_content').setAttribute('required', 'required');
+        } else if (contentType === 'image') {
+            imageInputGroup.style.display = 'block';
+            document.getElementById('image_file').setAttribute('required', 'required');
+        } else if (contentType === 'url') {
+            urlInputGroup.style.display = 'block';
+            document.getElementById('suspicious_url').setAttribute('required', 'required');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', toggleInputs);
+</script>
+{% endblock %}
